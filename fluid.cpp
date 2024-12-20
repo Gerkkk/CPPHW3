@@ -70,47 +70,11 @@ std::tuple<int, std::map<char, double>, int, int> read_file_new(std::ifstream &&
     return {g, fluid_rho, n, k};
 }
 
-// // Define the template class
-// template <typename... Types>
-// class TypeBinder {
-// public:
-//     // Print the types
-//     void printTypes() {
-//         std::cout << "Types: ";
-//         printTypeNames<Types...>();
-//         std::cout << std::endl;
-//     }
-
-// private:
-//     // Helper function to print the type names
-//     template <typename T>
-//     void printTypeNames() {
-//         std::cout << typeid(T).name() << " ";
-//     }
-
-//     // Variadic template function to print the type names
-//     template <typename T, typename... Rest>
-//     void printTypeNames() {
-//         printTypeNames<T>();
-//         printTypeNames<Rest...>();
-//     }
-
-//     // Base case for the variadic template function
-    
-//     void printTypeNames(){}
-// };
-
 
 // Define the template class
 template <typename T1, typename... Types>
 class TypeBinder {
 public:
-    // Print the types
-    // void printTypes() {
-    //     std::cout << "Types: ";
-    //     printTypeNames<T1, U1, Types...>();
-    //     std::cout << std::endl;
-    // }
 
     template <typename C>
     bool checkTypes() {
@@ -118,16 +82,6 @@ public:
     }
 
 private:
-    
-    // template <typename C, typename T>
-    // bool checkTypes() {
-    //     if (typeid(C) == typeid(T)) {
-    //         return true;
-    //     } else {
-    //         return false;
-    //     }
-    // }
-
     template <typename C, typename T, typename... Rest>
     bool checkTypes() {
         if (sizeof...(Rest) == 0) {
@@ -145,27 +99,10 @@ private:
     bool checkTypes(){
         return false;
     }
-    // // Helper function to print the type names
-    // template <typename T>
-    // void printTypeNames() {
-    //     std::cout << typeid(T).name() << " ";
-    // }
-
-    // // Variadic template function to print the type names
-    // template <typename T, typename U,typename... Rest>
-    // void printTypeNames() {
-    //     printTypeNames<T>();
-    //     printTypeNames<U, Rest...>();
-    // }
-
-    // // Base case for the variadic template function
-
-    // void printTypeNames(){}
 };
 
 int main(int argc, char* argv[]) {
     std::string p_type, v_type, v_flow_type, file_name;
-
     std::vector<std::string> arguments;
 
     for (int i = 0; i < argc; ++i) {
@@ -220,163 +157,16 @@ int main(int argc, char* argv[]) {
     }
 
     std::cout << p_type << " " << v_type << " " << v_flow_type << " " << file_name << std::endl;
-    file_name = "input";
-    std::vector<std::vector<char>> i_field;
-    std::tuple<int, std::map<char, double>, int, int> file_info = read_file_new(std::ifstream(file_name), i_field);
 
-    std::cout << std::get<0>(file_info) << std::endl;
-    for (auto it : std::get<1>(file_info)) {
-        std::cout << it.first << " " << it.second << std::endl;
-    }
-
-    std::cout << std::get<2>(file_info) << " " << std::get<3>(file_info) << std::endl;
-
-    Simulation<36, 84, Fixed<64, 16>, Fixed<64, 16>, Fixed<64, 16>> sim;
-//    char field[36][85] = {
-//            "####################################################################################",
-//            "#                                                                                  #",
-//            "#                                                                                  #",
-//            "#                                                                                  #",
-//            "#                                                                                  #",
-//            "#                                                                                  #",
-//            "#                                       .........                                  #",
-//            "#..............#            #           .........                                  #",
-//            "#..............#            #           .........                                  #",
-//            "#..............#            #           .........                                  #",
-//            "#..............#            #                                                      #",
-//            "#..............#            #                                                      #",
-//            "#..............#            #                                                      #",
-//            "#..............#            #                                                      #",
-//            "#..............#............#                                                      #",
-//            "#..............#............#                                                      #",
-//            "#..............#............#                                                      #",
-//            "#..............#............#                                                      #",
-//            "#..............#............#                                                      #",
-//            "#..............#............#                                                      #",
-//            "#..............#............#                                                      #",
-//            "#..............#............#                                                      #",
-//            "#..............#............################                     #                 #",
-//            "#...........................#....................................#                 #",
-//            "#...........................#....................................#                 #",
-//            "#...........................#....................................#                 #",
-//            "##################################################################                 #",
-//            "#                                                                                  #",
-//            "#                                                                                  #",
-//            "#                                                                                  #",
-//            "#                                                                                  #",
-//            "#                                                                                  #",
-//            "#                                                                                  #",
-//            "#                                                                                  #",
-//            "#                                                                                  #",
-//            "####################################################################################",
-//    };
-//
-//    for (int i = 0; i < 36; i++) {
-//        for (int j = 0; j < 85; j++) {
-//            sim.field[i][j] = i_field[i][j];
-//        }
-//    }
-
-//    for (int i = 0; i < 36; i++) {
-//        for(int j = 0 ; j < 85; j++) {
-//            sim.field[i][j] = field[i][j];
-//        }
-//    }
-
-
-//
-//    sim.g = std::get<0>(file_info);
-//    //sim.rho['.'] = it.second;
-//    for (auto it : std::get<1>(file_info)) {
-//        std::cout << "GOT: " << (int)it.first << " " << it.second << std::endl;
-//        sim.rho[it.first] = it.second;
-//        std::cout << "RC: " << sim.rho[it.first] << std::endl;
-//    }
-
-    //  std::cout << "Good enough" << std::endl;
-
-
-    // for (int i = 0; i < 100; ++i) {
-    //     auto t = sim.random01();
-    //     std::cout << t << std::endl;
-    // }
-
-    file_name = "./files/0";
+    Simulation<36, 84, FIXED(64, 10), FIXED(64, 10), FIXED(64, 10)> sim;
+    file_name = "input.txt";
     sim.load_from_file(std::ifstream(file_name));
-
-    std::cout << "HERE" << std::endl;
-    for (int i = 0; i < std::get<2>(file_info); ++i) {
-        for (int j = 0; j < std::get<3>(file_info); ++j) {
-            std::cout << sim.field[i][j];
-        }
-        std::cout << std::endl;
-    }
+    sim.tm.active = true;
 
     sim.Simulate();
 
-
-
-    //Simulator sim(, v_type, v_flow_type, file_name);
-
-    //std::cout << TYPES << " " << std::endl;
-    //#define VTYPE v_type
-    //TypeBinder<TYPES> tb;
-
-    // for_each_f<ALLPAIRS>(10);
-
-    // int n1, k1, t1;
-    // if (v_type == "FLOAT") {
-    //     if(tb.checkTypes<FLOAT>()) {
-    //         n1 = 0;
-    //         k1 = 0;
-    //         t1 = 0;
-    //     } else {
-    //         std::cerr << "Error: Unsupported type for --v-type." << std::endl;
-    //     }
-    // } else if (v_type == "DOUBLE") {
-    //     if(tb.checkTypes<DOUBLE>()) {
-    //         n1 = 0;
-    //         k1 = 0;
-    //         t1 = 1;
-    //     } else {
-    //         std::cerr << "Error: Unsupported type for --v-type." << std::endl;
-    //     }
-    // } else if (v_type[0] == 'F' && v_type[1] == 'A') {
-    //     int i = 2;
-    //     while (v_type[i] != '(') {
-    //         ++i;
-    //     }
-    //     i++;
-    //     int j = i;
-    //     while (v_type[j] != ',') {++j;}
-    //     n1 = std::stoi(v_type.substr(i, j - i));
-    //     j++;
-    //     i = j;
-    //     while (v_type[j] != ')') {++j;}
-    //     k1 = std::stoi(v_type.substr(i, j - i));
-    //     t1 = 2;
-
-    //     // for(constexpr auto& n: ns) {
-    //     //     if (n >= n1) {
-    //     //         for (constexpr auto& k: ks) {
-    //     //             if (k >= k1) {
-    //     //                 using Type = FastFixed<n, k>;
-    //     //                 tb.checkTypes<FAST_FIXED(n,k)>()
-    //     //                 break;
-    //     //             }
-    //     //         }
-
-    //     //         ans_j = i;
-    //     //         break;
-    //     //     }
-    //     // }
-
-        
-
-        
-
-
-    // }
+    sim.tm.finish();
+    sim.tm.print_results();
 
     return 0;
 }

@@ -1,5 +1,5 @@
-/idea
-/vscode
+/.idea
+/.vscode
 /cmake-build-debug
 /CMakeFiles
 /OOST=123
